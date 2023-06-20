@@ -20,11 +20,18 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@jridgewell/sourcemap-codec": "^1.4.15",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/mongoose": "^10.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "formidable": "3",
+    "joi": "^17.9.2",
+    "mongoose": "^7.3.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "superagent": "^7.1.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
