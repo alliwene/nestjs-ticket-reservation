@@ -16,8 +16,15 @@ export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationsService.create(createReservationDto);
+  create(
+    @Body() { startDate, endDate, placeId, invoiceId }: CreateReservationDto,
+  ) {
+    return this.reservationsService.create({
+      startDate,
+      endDate,
+      placeId,
+      invoiceId,
+    });
   }
 
   @Get()
