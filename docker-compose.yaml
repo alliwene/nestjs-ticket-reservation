@@ -31,6 +31,19 @@ services:
       mongo:
         condition: service_healthy
 
+  payments:
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: pnpm run start:dev payments
+    env_file:
+      - ./apps/payments/.env
+    ports:
+      - '3003:3003'
+    volumes:
+      - .:/usr/src/app
+
   mongo:
     image: mongo
     volumes:
