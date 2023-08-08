@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { ConfigService } from '@nestjs/config';
+import cookieParser from 'cookie-parser';
 
 import { AuthModule } from './auth.module';
 import { AllExceptionsFilter } from '@app/common';
@@ -14,6 +15,8 @@ async function bootstrap() {
   const logger = new NestLogger();
   const app = await NestFactory.create(AuthModule);
 
+  app.enableCors();
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useLogger(app.get(Logger));
   app.useGlobalFilters(new AllExceptionsFilter());

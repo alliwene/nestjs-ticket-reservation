@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
+import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -38,5 +39,9 @@ export class UsersService {
       throw new UnauthorizedException('Invalid credentials');
     }
     return user;
+  }
+
+  async getUser({ _id }: GetUserDto) {
+    return this.usersRepository.findOne({ _id });
   }
 }
