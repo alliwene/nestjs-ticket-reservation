@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from '@app/common';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { LoggerModule } from '@app/common';
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRES_IN: Joi.string().required(),
+        JWT_EXPIRES_IN: Joi.number().required(),
         PORT: Joi.number().required(),
       }),
     }),
@@ -34,6 +35,6 @@ import { LoggerModule } from '@app/common';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, LocalStrategy],
 })
 export class AuthModule {}
