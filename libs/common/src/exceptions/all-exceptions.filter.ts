@@ -30,6 +30,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()['message']
         : exception.message;
 
+    console.log(exception);
+
     this.logger.error(exception.message, {
       statusCode,
       message,

@@ -3,8 +3,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 
 import { AuthService } from './auth.service';
-import { CurrentUser } from './users/current-user.decorator';
+import { CurrentUser } from '@app/common';
 import { UserDocument } from './users/models/user.schema';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('auth')
 export class AuthController {
@@ -19,5 +20,11 @@ export class AuthController {
     const accessToken = await this.authService.login(user, response);
 
     response.send({ user, accessToken });
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @MessagePattern('authenticate')
+  async authenticate(@Payload() data: any) {
+    return data.user;
   }
 }

@@ -8,19 +8,22 @@ export class ReservationsService {
   constructor(
     private readonly reservationsRepository: ReservationsRepository,
   ) {}
-  create({ startDate, endDate, placeId, invoiceId }: CreateReservationDto) {
+  create(
+    { startDate, endDate, placeId, invoiceId }: CreateReservationDto,
+    userId: string,
+  ) {
     return this.reservationsRepository.create({
       startDate,
       endDate,
       placeId,
       invoiceId,
       timestamp: new Date(),
-      userId: '123',
+      userId,
     });
   }
 
-  findAll() {
-    return this.reservationsRepository.find({});
+  findAll(userId: string) {
+    return this.reservationsRepository.find({ userId });
   }
 
   findOne(_id: string) {
