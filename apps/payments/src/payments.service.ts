@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
-import { CreateChargeDto } from './dto/create-charge.dto';
+import { CreateChargeDto } from '@app/common';
 
 @Injectable()
 export class PaymentsService {
@@ -14,20 +14,18 @@ export class PaymentsService {
   );
   constructor(private configService: ConfigService) {}
 
-  async createCharge({ card, amount }: CreateChargeDto) {
-    const paymentMethod = await this.stripe.paymentMethods.create({
-      type: 'card',
-      card,
-    });
+  async createCharge({ amount }: CreateChargeDto) {
+    try {
+      const paymentIntent = await this.stripe.paymentIntents.create({
+        payment_method: 'pm_card_visa',
+        amount: amount * 100,
+        confirm: true,
+        currency: 'usd',
+      });
 
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      payment_method: paymentMethod.id,
-      amount: amount * 100,
-      confirm: true,
-      payment_method_types: ['card'],
-      currency: 'usd',
-    });
-
-    return paymentIntent;
+      return paymentIntent;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 }

@@ -21,15 +21,15 @@ export class ReservationsController {
 
   @Post()
   create(
-    @Body() { startDate, endDate, placeId, invoiceId }: CreateReservationDto,
+    @Body()
+    { startDate, endDate, charge }: CreateReservationDto,
     @CurrentUser() { _id }: UserDto,
   ) {
     return this.reservationsService.create(
       {
         startDate,
         endDate,
-        placeId,
-        invoiceId,
+        charge,
       },
       _id,
     );
