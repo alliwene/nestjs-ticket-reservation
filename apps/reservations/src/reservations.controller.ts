@@ -23,7 +23,7 @@ export class ReservationsController {
   create(
     @Body()
     { startDate, endDate, charge }: CreateReservationDto,
-    @CurrentUser() { _id }: UserDto,
+    @CurrentUser() { email, _id }: UserDto,
   ) {
     return this.reservationsService.create(
       {
@@ -31,7 +31,7 @@ export class ReservationsController {
         endDate,
         charge,
       },
-      _id,
+      { email, _id } as UserDto,
     );
   }
 

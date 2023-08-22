@@ -1,5 +1,5 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
-import { PAYMENTS_SERVICE } from '@app/common';
+import { PAYMENTS_SERVICE, UserDto } from '@app/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map, catchError } from 'rxjs';
 
@@ -16,11 +16,11 @@ export class ReservationsService {
   ) {}
   async create(
     { startDate, endDate, charge }: CreateReservationDto,
-    userId: string,
+    { email, _id: userId }: UserDto,
   ) {
     const { amount } = charge;
 
-    return this.paymentsService.send('create_charge', charge).pipe(
+    return this.paymentsService.send('create_charge', { amount, email }).pipe(
       catchError((error) => {
         this.logger.error('Error creating charge:', error);
         throw new Error(error.message);

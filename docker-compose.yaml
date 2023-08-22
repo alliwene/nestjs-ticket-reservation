@@ -39,8 +39,17 @@ services:
     command: pnpm run start:dev payments
     env_file:
       - ./apps/payments/.env
-    ports:
-      - '3003:3003'
+    volumes:
+      - .:/usr/src/app
+
+  notifications:
+    build:
+      context: .
+      dockerfile: ./apps/notifications/Dockerfile
+      target: development
+    command: pnpm run start:dev notifications
+    env_file:
+      - ./apps/notifications/.env
     volumes:
       - .:/usr/src/app
 
@@ -49,7 +58,7 @@ services:
     volumes:
       - mongodb:/data/mongodb
     healthcheck:
-      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
       interval: 5s
       timeout: 5s
       retries: 3
