@@ -22,14 +22,37 @@ export class PaymentsService {
 
   async createCharge({ amount, email }: PaymentsCreateChargeDto) {
     try {
+      const existingCustomers = await this.stripe.customers.list({ email });
+
+      if (existingCustomers.data.length > 0) {
+        const paymentIntent = await this.stripe.paymentIntents.create({
+          payment_method: 'pm_card_visa',
+          amount: amount * 100,
+          confirm: true,
+          currency: 'usd',
+          customer: existingCustomers.data[0].id,
+        });
+
+        return paymentIntent;
+      }
+
+      const customer = await this.stripe.customers.create({
+        email,
+        validate: true,
+      });
+
       const paymentIntent = await this.stripe.paymentIntents.create({
         payment_method: 'pm_card_visa',
         amount: amount * 100,
         confirm: true,
         currency: 'usd',
+        customer: customer.id,
       });
 
-      this.notificationsService.emit('notify_email', { email });
+      this.notificationsService.emit('notify_email', {
+        email,
+        text: `Your payment of $${amount} has completed successfully!`,
+      });
 
       return paymentIntent;
     } catch (error) {
