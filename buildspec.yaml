@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 822248934593.dkr.ecr.us-west-2.amazonaws.com
+
+  build:
+    commands: 
+      - echo Build started on `date`
+
+      - echo Building reservations
+      - docker build -t notifications -f ./apps/reservations/Dockerfile .
+      - docker tag reservations:latest 822248934593.dkr.ecr.us-west-2.amazonaws.com/reservations:latest
+
+      - echo Building payments
+      - docker build -t payments -f ./apps/payments/Dockerfile .
+      - docker tag payments:latest 822248934593.dkr.ecr.us-west-2.amazonaws.com/payments:latest
+
+      - echo Building notifications
+      - docker build -t notifications -f ./apps/notifications/Dockerfile .
+      - docker tag notifications:latest 822248934593.dkr.ecr.us-west-2.amazonaws.com/notifications:latest
+
+      - echo Building auth
+      - docker build -t auth -f ./apps/auth/Dockerfile .
+      - docker tag auth:latest 822248934593.dkr.ecr.us-west-2.amazonaws.com/auth:latest
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing images to ECR...
+
+      - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/notifications:latest
+      - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/payments:latest
+      - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/reservations:latest
+      - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/auth:latest
