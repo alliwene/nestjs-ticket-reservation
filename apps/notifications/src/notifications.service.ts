@@ -22,8 +22,7 @@ export class NotificationsService {
       from: this.configService.get('SMTP_USER'),
       to: email,
       subject: 'Ticket Reservation Notification',
-      // text,
-      html: `<b>${text}</b>`,
+      text,
     });
   }
 }

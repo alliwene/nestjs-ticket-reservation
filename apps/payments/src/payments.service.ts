@@ -11,7 +11,7 @@ export class PaymentsService {
   private readonly stripe = new Stripe(
     this.configService.get('STRIPE_SECRET_KEY'),
     {
-      apiVersion: '2022-11-15',
+      apiVersion: '2023-08-16',
     },
   );
   constructor(
@@ -31,6 +31,10 @@ export class PaymentsService {
           confirm: true,
           currency: 'usd',
           customer: existingCustomers.data[0].id,
+          automatic_payment_methods: {
+            enabled: true,
+            allow_redirects: 'never',
+          },
         });
 
         return paymentIntent;
@@ -47,6 +51,10 @@ export class PaymentsService {
         confirm: true,
         currency: 'usd',
         customer: customer.id,
+        automatic_payment_methods: {
+          enabled: true,
+          allow_redirects: 'never',
+        },
       });
 
       this.notificationsService.emit('notify_email', {
