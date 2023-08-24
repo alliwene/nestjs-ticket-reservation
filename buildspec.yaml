@@ -10,7 +10,7 @@ phases:
       - echo Build started on `date`
 
       - echo Building reservations
-      - docker build -t notifications -f ./apps/reservations/Dockerfile .
+      - docker build -t reservations -f ./apps/reservations/Dockerfile .
       - docker tag reservations:latest 822248934593.dkr.ecr.us-west-2.amazonaws.com/reservations:latest
 
       - echo Building payments
