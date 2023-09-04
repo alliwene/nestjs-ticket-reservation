@@ -3,10 +3,11 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 822248934593.dkr.ecr.us-west-2.amazonaws.com
+      - aws ecr get-login-password --region us-west-2 | docker login \
+        --username AWS --password-stdin 822248934593.dkr.ecr.us-west-2.amazonaws.com
 
   build:
-    commands: 
+    commands:
       - echo Build started on `date`
 
       - echo Building reservations
@@ -34,3 +35,18 @@ phases:
       - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/payments:latest
       - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/reservations:latest
       - docker push 822248934593.dkr.ecr.us-west-2.amazonaws.com/auth:latest
+
+      - echo Deleting old images from ECR...
+
+      - aws ecr list-images --repository-name auth \
+        --filter "tagStatus=UNTAGGED" --query 'imageIds[*].imageDigest' --output json | jq -r '.[]' | xargs -I {} \
+        aws ecr batch-delete-image --repository-name auth --image-ids imageDigest={}
+      - aws ecr list-images --repository-name reservations \
+        --filter "tagStatus=UNTAGGED" --query 'imageIds[*].imageDigest' --output json | jq -r '.[]' | xargs -I {} \
+        aws ecr batch-delete-image --repository-name reservations --image-ids imageDigest={}
+      - aws ecr list-images --repository-name payments \
+        --filter "tagStatus=UNTAGGED" --query 'imageIds[*].imageDigest' --output json | jq -r '.[]' | xargs -I {} \
+        aws ecr batch-delete-image --repository-name payments --image-ids imageDigest={}
+      - aws ecr list-images --repository-name notifications \
+        --filter "tagStatus=UNTAGGED" --query 'imageIds[*].imageDigest' --output json | jq -r '.[]' | xargs -I {} \
+        aws ecr batch-delete-image --repository-name notifications --image-ids imageDigest={}
