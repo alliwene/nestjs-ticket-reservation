@@ -1,11 +1,11 @@
 import { Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 import { AuthService } from './auth.service';
 import { CurrentUser } from '@app/common';
 import { UserDocument } from './users/models/user.schema';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
   ) {
     const accessToken = await this.authService.login(user, response);
 
-    response.send({ user, accessToken });
+    response.status(200).send({ user, accessToken });
   }
 
   @UseGuards(AuthGuard('jwt'))
