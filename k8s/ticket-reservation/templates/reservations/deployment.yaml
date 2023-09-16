@@ -17,6 +17,11 @@ spec:
       containers:
         - image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/reservations:latest
           name: reservations
-
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: connectionString
       imagePullSecrets:
         - name: ecr-key
