@@ -17,5 +17,24 @@ spec:
       containers:
         - image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/notifications:latest
           name: notifications
+          env:
+            - name: PORT
+              value: '3000'
+            - name: GOOGLE_OAUTH_CLIENT_ID
+              value: 709184066703-fgbk4o9bvnpc94r6colrb0ec6gf2aq5i.apps.googleusercontent.com
+            - name: SMTP_USER
+              value: allisonabiodun@gmail.com
+            - name: GOOGLE_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: clientSecret
+            - name: GOOGLE_OAUTH_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: refreshToken
+          ports:
+            - containerPort: 3000
       imagePullSecrets:
         - name: ecr-key
