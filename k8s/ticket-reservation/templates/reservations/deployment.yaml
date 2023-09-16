@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reservations
+  name: reservations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservations
+  template:
+    metadata:
+      labels:
+        app: reservations
+    spec:
+      containers:
+        - image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/reservations:latest
+          name: reservations
+
+      imagePullSecrets:
+        - name: ecr-key

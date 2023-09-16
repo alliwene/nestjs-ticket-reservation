@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: notifications
+  name: notifications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications
+  template:
+    metadata:
+      labels:
+        app: notifications
+    spec:
+      containers:
+        - image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/notifications:latest
+          name: notifications
+      imagePullSecrets:
+        - name: ecr-key

@@ -49,3 +49,4 @@ phases:
       - aws ecr list-images --repository-name notifications \
         --filter "tagStatus=UNTAGGED" --query 'imageIds[*].imageDigest' --output json | jq -r '.[]' | xargs -I {} \
         aws ecr batch-delete-image --repository-name notifications --image-ids imageDigest={}
+

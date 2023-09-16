@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: auth
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/auth:latest
+          name: auth
+
+      imagePullSecrets:
+        - name: ecr-key

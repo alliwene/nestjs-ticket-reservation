@@ -1,4 +1,4 @@
-FROM node:18-alpine AS development 
+FROM node:20-alpine AS development 
 
 WORKDIR /usr/src/app
 
@@ -20,7 +20,7 @@ RUN cd apps/auth && pnpm install
 RUN pnpm run build auth
 
 
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -30,7 +30,7 @@ COPY pnpm-lock.yaml ./
 
 RUN npm install -g pnpm 
 
-RUN pnpm install --prod 
+RUN pnpm install --production 
 
 COPY --from=development /usr/src/app/dist ./dist 
 
