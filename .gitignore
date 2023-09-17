@@ -36,5 +36,4 @@ lerna-debug.log*
 
 .env
 
-docker-ecs-push.sh
-delete-untagged.sh 
+*.sh
