@@ -10,6 +10,7 @@ import {
   LoggerModule,
   AUTH_SERVICE,
   PAYMENTS_SERVICE,
+  HealthModule,
 } from '@app/common';
 import { ReservationsRepository } from './reservations.repository';
 import {
@@ -60,6 +61,7 @@ import {
         }),
       },
     ]),
+    HealthModule,
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService, ReservationsRepository],

@@ -6,7 +6,7 @@ import * as Joi from 'joi';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
-import { LoggerModule } from '@app/common';
+import { HealthModule, LoggerModule } from '@app/common';
 import { LocalStrategy, JwtStrategy } from './strategies';
 
 @Module({
@@ -34,6 +34,7 @@ import { LocalStrategy, JwtStrategy } from './strategies';
         },
       }),
     }),
+    HealthModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
