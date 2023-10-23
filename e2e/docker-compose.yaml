@@ -35,11 +35,15 @@ services:
     image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/payments:latest
     env_file:
       - ../apps/payments/.env
+    ports:
+      - '3003:3003'
 
   notifications:
     image: 822248934593.dkr.ecr.us-west-2.amazonaws.com/notifications:latest
     env_file:
       - ../apps/notifications/.env
+    ports:
+      - '3004:3004'
 
   mongo:
     image: mongo
@@ -48,7 +52,7 @@ services:
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
       interval: 5s
-      timeout: 5s
+      timeout: 10s
       retries: 3
       start_period: 5s
 
