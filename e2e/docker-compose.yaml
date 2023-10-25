@@ -18,7 +18,7 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      mongo:
+      mysql:
         condition: service_healthy
 
   auth:
@@ -28,7 +28,7 @@ services:
     ports:
       - '3001:3001'
     depends_on:
-      mongo:
+      mysql:
         condition: service_healthy
 
   payments:
@@ -45,16 +45,20 @@ services:
     ports:
       - '3004:3004'
 
-  mongo:
-    image: mongo
+  mysql:
+    image: mysql
+    env_file:
+      - .env
+    ports:
+      - '3306:3306'
     volumes:
-      - mongodb:/data/mongodb
+      - mysql:/var/lib/mysql
     healthcheck:
-      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 5s
       timeout: 10s
       retries: 3
       start_period: 5s
 
 volumes:
-  mongodb:
+  mysql:
