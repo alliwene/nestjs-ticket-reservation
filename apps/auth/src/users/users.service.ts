@@ -13,7 +13,7 @@ import { GetUserDto } from './dto/get-user.dto';
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
-  async create({ email, password }: CreateUserDto) {
+  async create({ email, password, roles }: CreateUserDto) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -21,6 +21,7 @@ export class UsersService {
       const user = await this.usersRepository.create({
         email,
         password: hashedPassword,
+        roles,
       });
       return user;
     } catch (error) {

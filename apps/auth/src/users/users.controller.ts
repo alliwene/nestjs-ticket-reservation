@@ -10,10 +10,11 @@ import { UserDocument } from './models/user.schema';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Post()
-  async createUser(@Body() { email, password }: CreateUserDto) {
+  async createUser(@Body() { email, password, roles }: CreateUserDto) {
     return this.usersService.create({
       email,
       password,
+      roles,
     });
   }
 
