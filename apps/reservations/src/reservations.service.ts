@@ -1,11 +1,12 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
-import { PAYMENTS_SERVICE, UserDto } from '@app/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map, catchError } from 'rxjs';
 
+import { PAYMENTS_SERVICE, UserDto } from '@app/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
+import { Reservation } from './entities/reservation.entity';
 
 @Injectable()
 export class ReservationsService {
@@ -16,7 +17,7 @@ export class ReservationsService {
   ) {}
   async create(
     { startDate, endDate, charge }: CreateReservationDto,
-    { email, _id: userId }: UserDto,
+    { email, id: userId }: UserDto,
   ) {
     const { amount } = charge;
 
@@ -33,7 +34,7 @@ export class ReservationsService {
           userId,
           invoiceId: response.id,
           amount,
-        });
+        } as Reservation);
       }),
     );
   }
@@ -42,18 +43,18 @@ export class ReservationsService {
     return this.reservationsRepository.find({ userId });
   }
 
-  async findOne(_id: string) {
-    return this.reservationsRepository.findOne({ _id });
+  async findOne(id: string) {
+    return this.reservationsRepository.findOne({ id });
   }
 
-  async update(_id: string, { startDate, endDate }: UpdateReservationDto) {
+  async update(id: string, { startDate, endDate }: UpdateReservationDto) {
     return this.reservationsRepository.findOneAndUpdate(
-      { _id },
-      { $set: { startDate, endDate } },
+      { id },
+      { startDate, endDate },
     );
   }
 
-  async remove(_id: string) {
-    return this.reservationsRepository.findOneAndDelete({ _id });
+  async remove(id: string) {
+    return this.reservationsRepository.findOneAndDelete({ id });
   }
 }

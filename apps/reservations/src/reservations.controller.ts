@@ -23,7 +23,7 @@ export class ReservationsController {
   create(
     @Body()
     { startDate, endDate, charge }: CreateReservationDto,
-    @CurrentUser() { email, _id }: UserDto,
+    @CurrentUser() { email, id }: UserDto,
   ) {
     return this.reservationsService.create(
       {
@@ -31,13 +31,13 @@ export class ReservationsController {
         endDate,
         charge,
       },
-      { email, _id } as UserDto,
+      { email, id } as UserDto,
     );
   }
 
   @Get()
-  findAll(@CurrentUser() { _id }: UserDto) {
-    return this.reservationsService.findAll(_id);
+  findAll(@CurrentUser() { id }: UserDto) {
+    return this.reservationsService.findAll(id);
   }
 
   @Get(':id')
