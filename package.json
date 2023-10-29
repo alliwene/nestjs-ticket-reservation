@@ -29,6 +29,7 @@
     "@nestjs/mongoose": "^10.0.1",
     "@nestjs/platform-express": "^10.2.1",
     "@nestjs/swagger": "^7.1.8",
+    "@nestjs/typeorm": "^10.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
@@ -36,12 +37,14 @@
     "formidable": "3.5.0",
     "joi": "^17.9.2",
     "mongoose": "^7.4.4",
+    "mysql2": "^3.6.2",
     "nestjs-pino": "^3.4.0",
     "pino-http": "^8.4.0",
     "pino-pretty": "^10.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "superagent": "^8.1.2"
+    "superagent": "^8.1.2",
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",

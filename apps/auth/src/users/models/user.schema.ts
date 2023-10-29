@@ -1,10 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 
-import { AbstractDocument } from '@app/common';
+import { AbstractEntity } from '@app/common';
 
 @Schema({ versionKey: false })
-export class UserDocument extends AbstractDocument {
+export class UserDocument extends AbstractEntity {
   @Prop({ unique: true })
   email: string;
 
