@@ -27,14 +27,16 @@ export class ReservationsService {
         throw new Error(error.message);
       }),
       map(async (response) => {
-        return this.reservationsRepository.create({
+        const reservation = new Reservation({
           startDate,
           endDate,
           timestamp: new Date(),
           userId,
           invoiceId: response.id,
           amount,
-        } as Reservation);
+        });
+
+        return this.reservationsRepository.create(reservation);
       }),
     );
   }
