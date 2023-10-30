@@ -5,7 +5,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 
 import { AuthService } from './auth.service';
 import { CurrentUser } from '@app/common';
-import { UserDocument } from './users/models/user.schema';
+import { User } from './users/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +14,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(
-    @CurrentUser() user: UserDocument,
+    @CurrentUser() user: User,
     @Res({ passthrough: true }) response: Response,
   ) {
     const accessToken = await this.authService.login(user, response);

@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, GetUserDto } from './dto';
 import { UsersRepository } from './users.repository';
-import { GetUserDto } from './dto/get-user.dto';
+import { Role, User } from './entities';
 
 @Injectable()
 export class UsersService {
@@ -21,11 +21,11 @@ export class UsersService {
       const user = await this.usersRepository.create({
         email,
         password: hashedPassword,
-        roles,
-      });
+        roles: roles?.map((roleDto) => new Role(roleDto)),
+      } as User);
       return user;
     } catch (error) {
-      if (error.code === 11000) {
+      if (error.code === 1062) {
         throw new ConflictException('Email already exists');
       } else {
         throw new InternalServerErrorException();
@@ -42,7 +42,7 @@ export class UsersService {
     return user;
   }
 
-  async getUser({ _id }: GetUserDto) {
-    return this.usersRepository.findOne({ _id });
+  async getUser({ id }: GetUserDto) {
+    return this.usersRepository.findOne({ id });
   }
 }

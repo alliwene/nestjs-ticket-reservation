@@ -4,15 +4,10 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { UsersRepository } from './users.repository';
 import { DatabaseModule } from '@app/common';
-import { UserDocument, UserSchema } from './models/user.schema';
+import { User, Role } from './entities';
 
 @Module({
-  imports: [
-    DatabaseModule,
-    DatabaseModule.forFeature([
-      { name: UserDocument.name, schema: UserSchema },
-    ]),
-  ],
+  imports: [DatabaseModule, DatabaseModule.forFeature([User, Role])],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
   exports: [UsersService],

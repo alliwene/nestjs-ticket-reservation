@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { CurrentUser } from '@app/common';
-import { UserDocument } from './models/user.schema';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -20,7 +20,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async getUser(@CurrentUser() user: UserDocument) {
+  async getUser(@CurrentUser() user: User) {
     return user;
   }
 }
