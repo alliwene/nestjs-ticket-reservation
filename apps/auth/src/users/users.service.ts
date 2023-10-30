@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
@@ -28,18 +29,26 @@ export class UsersService {
       if (error.code === 11000) {
         throw new ConflictException('Email already exists');
       } else {
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException(error);
       }
     }
   }
 
   async verifyUser(email: string, password: string) {
-    const user = await this.usersRepository.findOne({ email });
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      throw new UnauthorizedException('Invalid credentials');
+    try {
+      const user = await this.usersRepository.findOne({ email });
+
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      return user;
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      throw new InternalServerErrorException(err);
     }
-    return user;
   }
 
   async getUser({ _id }: GetUserDto) {
