@@ -13,7 +13,7 @@ export class User extends AbstractEntity<User> {
   @Exclude()
   password: string;
 
-  @ManyToMany(() => Role, { cascade: true })
+  @ManyToMany(() => Role, { cascade: true, eager: true })
   @JoinTable()
   roles?: Role[];
 }
