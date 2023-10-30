@@ -14,12 +14,12 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(
-    @CurrentUser() user: User,
+    @CurrentUser() { id, email }: User,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const accessToken = await this.authService.login(user, response);
+    const accessToken = await this.authService.login({ id } as User, response);
 
-    response.status(200).send({ user, accessToken });
+    response.status(200).send({ user: { id, email }, accessToken });
   }
 
   @UseGuards(AuthGuard('jwt'))

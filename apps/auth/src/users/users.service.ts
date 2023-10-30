@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
@@ -18,28 +19,36 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     try {
-      const user = await this.usersRepository.create({
+      const user = new User({
         email,
         password: hashedPassword,
         roles: roles?.map((roleDto) => new Role(roleDto)),
-      } as User);
-      return user;
+      });
+      return await this.usersRepository.create(user);
     } catch (error) {
-      if (error.code === 1062) {
+      if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('Email already exists');
       } else {
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException(error);
       }
     }
   }
 
   async verifyUser(email: string, password: string) {
-    const user = await this.usersRepository.findOne({ email });
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      throw new UnauthorizedException('Invalid credentials');
+    try {
+      const user = await this.usersRepository.findOne({ email });
+
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      return user;
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      throw new InternalServerErrorException(err);
     }
-    return user;
   }
 
   async getUser({ id }: GetUserDto) {

@@ -12,8 +12,8 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
-  async login(user: User, response: Response): Promise<string> {
-    const tokenPayload: TokenPayload = { userId: user.id.toString() };
+  async login({ id }: User, response: Response): Promise<string> {
+    const tokenPayload: TokenPayload = { userId: id.toString() };
 
     const expires = new Date();
     expires.setSeconds(
