@@ -68,5 +68,10 @@ services:
       retries: 3
       start_period: 5s
 
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - 5672:5672
+
 volumes:
   mongodb:
