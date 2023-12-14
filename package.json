@@ -20,6 +20,8 @@
     "test:e2e": "docker-compose --project-directory ./e2e --file ./e2e/docker-compose.yaml up e2e"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.13",
+    "@grpc/proto-loader": "^0.7.10",
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "@nestjs/common": "^10.2.1",
     "@nestjs/config": "^3.0.0",
@@ -41,7 +43,8 @@
     "pino-pretty": "^10.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "superagent": "^8.1.2"
+    "superagent": "^8.1.2",
+    "ts-proto": "^1.165.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
