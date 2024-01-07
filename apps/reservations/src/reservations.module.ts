@@ -9,11 +9,11 @@ import { ReservationsController } from './reservations.controller';
 import {
   DatabaseModule,
   LoggerModule,
-  AUTH_SERVICE,
-  PAYMENTS_SERVICE,
   HealthModule,
   AUTH_PACKAGE_NAME,
   PAYMENTS_PACKAGE_NAME,
+  AUTH_SERVICE_NAME,
+  PAYMENTS_SERVICE_NAME,
 } from '@app/common';
 import { ReservationsRepository } from './reservations.repository';
 import {
@@ -38,7 +38,7 @@ import {
     ClientsModule.registerAsync([
       {
         inject: [ConfigService],
-        name: AUTH_SERVICE,
+        name: AUTH_SERVICE_NAME,
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,
           options: {
@@ -50,7 +50,7 @@ import {
       },
       {
         inject: [ConfigService],
-        name: PAYMENTS_SERVICE,
+        name: PAYMENTS_SERVICE_NAME,
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,
           options: {

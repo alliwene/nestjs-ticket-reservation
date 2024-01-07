@@ -7,7 +7,7 @@ import { join } from 'path';
 import {
   LoggerModule,
   NOTIFICATIONS_PACKAGE_NAME,
-  NOTIFICATIONS_SERVICE,
+  NOTIFICATIONS_SERVICE_NAME,
 } from '@app/common';
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
@@ -25,7 +25,7 @@ import { PaymentsService } from './payments.service';
     ClientsModule.registerAsync([
       {
         inject: [ConfigService],
-        name: NOTIFICATIONS_SERVICE,
+        name: NOTIFICATIONS_SERVICE_NAME,
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,
           options: {
