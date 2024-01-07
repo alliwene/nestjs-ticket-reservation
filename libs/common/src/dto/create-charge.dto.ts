@@ -1,7 +1,8 @@
 import { Transform, Type } from 'class-transformer';
 import { IsNumber, IsNotEmpty, Min } from 'class-validator';
+import { CreateChargeMessage } from '../types';
 
-export class CreateChargeDto {
+export class CreateChargeDto implements Omit<CreateChargeMessage, 'email'> {
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
     { message: 'Amount must be a number' },

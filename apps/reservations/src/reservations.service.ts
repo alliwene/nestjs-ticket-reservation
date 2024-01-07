@@ -1,26 +1,39 @@
-import { Injectable, Inject, Logger } from '@nestjs/common';
-import { PAYMENTS_SERVICE, UserDto } from '@app/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable, Inject, Logger, OnModuleInit } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
 import { map, catchError } from 'rxjs';
 
+import {
+  PAYMENTS_SERVICE_NAME,
+  PaymentsServiceClient,
+  UserDto,
+} from '@app/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
 
 @Injectable()
-export class ReservationsService {
+export class ReservationsService implements OnModuleInit {
   protected readonly logger = new Logger(ReservationsService.name);
+  private paymentsService: PaymentsServiceClient;
+
   constructor(
     private readonly reservationsRepository: ReservationsRepository,
-    @Inject(PAYMENTS_SERVICE) private readonly paymentsService: ClientProxy,
+    @Inject(PAYMENTS_SERVICE_NAME) private readonly client: ClientGrpc,
   ) {}
+
+  onModuleInit() {
+    this.paymentsService = this.client.getService<PaymentsServiceClient>(
+      PAYMENTS_SERVICE_NAME,
+    );
+  }
+
   async create(
     { startDate, endDate, charge }: CreateReservationDto,
     { email, _id: userId }: UserDto,
   ) {
     const { amount } = charge;
 
-    return this.paymentsService.send('create_charge', { amount, email }).pipe(
+    return this.paymentsService.createCharge({ amount, email }).pipe(
       catchError((error) => {
         this.logger.error('Error creating charge:', error);
         throw new Error(error.message);
