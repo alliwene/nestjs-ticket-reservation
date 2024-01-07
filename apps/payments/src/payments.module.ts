@@ -30,7 +30,7 @@ import { PaymentsService } from './payments.service';
           transport: Transport.GRPC,
           options: {
             package: NOTIFICATIONS_PACKAGE_NAME,
-            protoPath: join(__dirname, '../../../proto/payments.proto'),
+            protoPath: join(__dirname, '../../../proto/notifications.proto'),
             url: configService.getOrThrow('NOTIFICATIONS_GRPC_URL'),
           },
         }),
