@@ -8,9 +8,10 @@ import { Logger } from 'nestjs-pino';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
 import { Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 import { AuthModule } from './auth.module';
-import { AllExceptionsFilter } from '@app/common';
+import { AUTH_PACKAGE_NAME, AllExceptionsFilter } from '@app/common';
 
 async function bootstrap() {
   const logger = new NestLogger();
@@ -18,10 +19,11 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.GRPC,
     options: {
-      host: '0.0.0.0',
-      port: configService.get('TCP_PORT'),
+      package: AUTH_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../../proto/auth.proto'),
+      url: configService.getOrThrow('AUTH_GRPC_URL'),
     },
   });
 
