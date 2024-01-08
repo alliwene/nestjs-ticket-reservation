@@ -13,7 +13,14 @@ import { LoggerModule } from '@app/common';
       useFactory: (configService: ConfigService) => ({
         gateway: {
           supergraphSdl: new IntrospectAndCompose({
-            subgraphs: [],
+            subgraphs: [
+              {
+                name: 'reservations',
+                url: configService.getOrThrow<string>(
+                  'RESERVATIONS_GRAPHQL_URL',
+                ),
+              },
+            ],
           }),
         },
       }),
