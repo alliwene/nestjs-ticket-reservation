@@ -5,7 +5,6 @@ import { ReservationDocument } from './models/reservation.schema';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { CurrentUser, UserDto } from '@app/common';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
 
 @Resolver(() => ReservationDocument)
 export class ReservationsResolver {
@@ -35,12 +34,12 @@ export class ReservationsResolver {
     return this.reservationsService.remove(id);
   }
 
-  @Mutation(() => ReservationDocument)
-  updateReservation(
-    @Args('id', { type: () => String }) id: string,
-    @Args('updateReservationInput')
-    updateReservationInput: UpdateReservationDto,
-  ) {
-    return this.reservationsService.update(id, updateReservationInput);
-  }
+  // @Mutation(() => ReservationDocument)
+  // updateReservation(
+  //   @Args('id', { type: () => String }) id: string,
+  //   @Args('updateReservationInput')
+  //   updateReservationInput: UpdateReservationDto,
+  // ) {
+  //   return this.reservationsService.update(id, updateReservationInput);
+  // }
 }

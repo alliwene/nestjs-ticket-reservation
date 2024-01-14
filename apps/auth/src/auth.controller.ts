@@ -5,7 +5,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 
 import { AuthService } from './auth.service';
 import { CurrentUser } from '@app/common';
-import { UserDocument } from './users/models/user.schema';
+import { UserDocument } from '../../../libs/common/src/models/user.schema';
 
 @Controller('auth')
 export class AuthController {

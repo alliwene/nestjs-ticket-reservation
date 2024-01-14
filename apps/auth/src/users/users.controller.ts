@@ -3,8 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
-import { CurrentUser } from '@app/common';
-import { UserDocument } from './models/user.schema';
+import { CurrentUser, UserDocument } from '@app/common';
 
 @Controller('users')
 export class UsersController {
