@@ -1,3 +1,4 @@
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsArray,
   IsEmail,
@@ -7,12 +8,14 @@ import {
   IsStrongPassword,
 } from 'class-validator';
 
+@InputType()
 export class CreateUserDto {
   /**
    * User email address
    * @example 'ab@example.com'
    */
   @IsEmail()
+  @Field()
   email: string;
 
   /**
@@ -28,6 +31,7 @@ export class CreateUserDto {
         'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character',
     },
   )
+  @Field()
   password: string;
 
   /**
@@ -37,5 +41,6 @@ export class CreateUserDto {
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
+  @Field(() => [String], { nullable: true })
   roles?: string[];
 }
