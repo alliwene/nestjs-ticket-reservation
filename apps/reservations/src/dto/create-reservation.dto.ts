@@ -1,4 +1,6 @@
 import { Type } from 'class-transformer';
+import { Field, InputType } from '@nestjs/graphql';
+
 import {
   IsDate,
   IsDefined,
@@ -6,6 +8,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateChargeDto } from '@app/common';
+
+@InputType()
 export class CreateReservationDto {
   /**
    * Reservation start date
@@ -13,6 +17,7 @@ export class CreateReservationDto {
    */
   @IsDate()
   @Type(() => Date)
+  @Field()
   startDate: Date;
 
   /**
@@ -21,11 +26,13 @@ export class CreateReservationDto {
    */
   @IsDate()
   @Type(() => Date)
+  @Field()
   endDate: Date;
 
   @IsDefined()
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => CreateChargeDto)
+  @Field(() => CreateChargeDto)
   charge: CreateChargeDto;
 }

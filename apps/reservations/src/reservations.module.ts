@@ -19,6 +19,7 @@ import {
   ReservationDocument,
   ReservationSchema,
 } from './models/reservation.schema';
+import { ReservationsResolver } from './reservations.resolver';
 
 @Module({
   imports: [
@@ -70,6 +71,10 @@ import {
     HealthModule,
   ],
   controllers: [ReservationsController],
-  providers: [ReservationsService, ReservationsRepository],
+  providers: [
+    ReservationsService,
+    ReservationsRepository,
+    ReservationsResolver,
+  ],
 })
 export class ReservationsModule {}
