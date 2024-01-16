@@ -67,4 +67,10 @@ export class PaymentsService {
       throw new BadRequestException(error);
     }
   }
+
+  async getPayments() {
+    const payments = await this.stripe.paymentIntents.list();
+
+    return payments.data;
+  }
 }
